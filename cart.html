@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Delivr - Cart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-wrapper">
+        <a href="index.html" class="logo">
+            <img src="images/delivr-logo-transparent.png" alt="Delivr Logo" class="logo-img">
+        </a>
+        <div class="nav-content">
+            <a href="index.html" class="nav-item">Home</a>
+            <a href="browse.html" class="nav-item">Browse Menu</a>
+            <a href="restaurants.html" class="nav-item">Restaurants</a>
+            <a href="track-order.html" class="nav-item">Track Order</a>
+            <a href="cart.html" class="nav-item active">Cart</a>
+            <a href="profile.html" class="nav-item">Profile</a>
+            <a href="login.html" class="nav-item login-btn">Login/Signup</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container" style="padding: 40px 24px;">
+    <h1 class="coming-soon" style="text-align:center;margin-bottom:28px;">Cart - Coming Soon</h1>
+
+    <!-- PAYMENT SECTION -->
+    <section class="payment-section" style="max-width:900px;margin:0 auto;">
+        <h2>Payment Options</h2>
+
+        <!-- DELIVERY & PRICE INFO -->
+        <div class="payment-summary" style="margin-bottom:18px;">
+            <p>Item Total: ₹0</p>
+            <p>Delivery Fee: ₹0</p>
+            <p><strong>Grand Total: ₹0</strong></p>
+        </div>
+
+        <!-- UPI -->
+        <div class="payment-option" onclick="selectPayment('upi')">
+            <div class="left-content">
+                <span>UPI</span>
+            </div>
+            <input type="radio" name="payment" id="upi-radio" class="payment-radio">
+        </div>
+
+        <!-- UPI input (shown if no saved upi) -->
+        <div id="upi-box" class="hidden pay-box">
+            <label>Enter UPI ID:</label>
+            <input type="text" id="saved-upi-id" placeholder="example@upi" style="width:100%;padding:8px;margin-top:8px;" />
+            <button class="pay-btn" style="margin-top:10px;">Verify &amp; Pay</button>
+        </div>
+
+        <!-- UPI saved (shown if saved-upi-id has value) -->
+        <div id="upi-saved" class="hidden pay-box">
+            <p class="saved-upi">yourupi@bank</p>
+            <button class="pay-btn">Pay via UPI</button>
+        </div>
+
+        <!-- CARD -->
+        <div class="payment-option" onclick="selectPayment('card')">
+            <div class="left-content">
+                <span>Credit / Debit Card</span>
+            </div>
+            <input type="radio" name="payment" id="card-radio" class="payment-radio">
+        </div>
+
+        <div id="card-box" class="hidden pay-box">
+            <label>Card Number</label>
+            <input type="text" placeholder="XXXX XXXX XXXX 1234" style="width:100%;padding:8px;margin-top:6px;" />
+            <div style="display:flex;gap:8px;margin-top:8px;">
+                <input type="text" placeholder="MM/YY" style="flex:1;padding:8px;" />
+                <input type="password" placeholder="CVV" style="width:120px;padding:8px;" />
+            </div>
+            <button class="pay-btn" style="margin-top:10px;">Pay Now</button>
+        </div>
+
+        <!-- CASH ON DELIVERY -->
+        <div class="payment-option" onclick="selectPayment('cash')" style="position: relative;">
+            <div class="left-content">
+                <span>Cash on Delivery</span>
+                <button class="info-btn" onclick="event.stopPropagation(); toggleCashInfo();">?</button>
+                <span id="cash-info" class="cash-info hidden">
+                    Pay the delivery partner via Cash or UPI.
+                </span>
+            </div>
+            <input type="radio" id="cash-radio" name="payment" class="payment-radio">
+        </div>
+
+        <div id="cash-box" class="hidden pay-box">
+            <button class="pay-btn">Pay with Cash / UPI on Delivery</button>
+        </div>
+
+    </section>
+</div>
+
+<!-- UPI POPUP (kept for backward compatibility if you used it earlier) -->
+<div id="upi-popup" class="popup">
+    <div class="popup-box">
+        <h3>Enter UPI ID</h3>
+        <input type="text" placeholder="example@upi" id="upi-input">
+        <button onclick="closeUPI()" class="popup-close">Done</button>
+    </div>
+</div>
+
+<!-- CARD POPUP (kept but not used in current inline layout) -->
+<div id="card-popup" class="popup">
+    <div class="popup-box">
+        <h3>Card Details</h3>
+        <input type="text" placeholder="Card Number">
+        <input type="text" placeholder="Expiry (MM/YY)">
+        <input type="text" placeholder="CVV">
+        <button onclick="closeCard()" class="popup-close">Done</button>
+    </div>
+</div>
+
+<!-- COD POPUP (kept) -->
+<div id="cod-popup" class="popup">
+    <div class="popup-box">
+        <p>Pay via cash / UPI directly to the delivery partner.</p>
+        <button onclick="closeCOD()" class="popup-close">OK</button>
+    </div>
+</div>
+
+<!-- SCRIPT: payment UI logic (use your scripts/script.js or inline) -->
+<script>
+// MAIN PAYMENT HANDLER
+function selectPayment(method) {
+    // Hide every box first
+    hideAllPaymentBoxes();
+
+    // Uncheck all radios
+    const upiRadio = document.getElementById("upi-radio");
+    const cardRadio = document.getElementById("card-radio");
+    const cashRadio = document.getElementById("cash-radio");
+    if (upiRadio) upiRadio.checked = false;
+    if (cardRadio) cardRadio.checked = false;
+    if (cashRadio) cashRadio.checked = false;
+
+    // Always hide cash info bubble when switching
+    const cashInfo = document.getElementById("cash-info");
+    if (cashInfo) cashInfo.classList.add("hidden");
+
+    // UPI
+    if (method === "upi") {
+        if (upiRadio) upiRadio.checked = true;
+
+        // check if UPI ID exists (frontend placeholder)
+        const savedUPIEl = document.getElementById("saved-upi-id");
+        const value = savedUPIEl ? savedUPIEl.value.trim() : "";
+
+        if (value !== "") {
+            // Show "Pay via UPI"
+            const upiSaved = document.getElementById("upi-saved");
+            if (upiSaved) upiSaved.classList.remove("hidden");
+        } else {
+            const upiBox = document.getElementById("upi-box");
+            if (upiBox) upiBox.classList.remove("hidden");
+        }
+        return;
+    }
+
+    // CARD
+    if (method === "card") {
+        if (cardRadio) cardRadio.checked = true;
+        const cardBox = document.getElementById("card-box");
+        if (cardBox) cardBox.classList.remove("hidden");
+        return;
+    }
+
+    // CASH
+    if (method === "cash") {
+        if (cashRadio) cashRadio.checked = true;
+        const cashBox = document.getElementById("cash-box");
+        if (cashBox) cashBox.classList.remove("hidden");
+        return;
+    }
+}
+
+// HIDE ALL PAYMENT UI BOXES
+function hideAllPaymentBoxes() {
+    ["upi-box", "upi-saved", "card-box", "cash-box"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add("hidden");
+    });
+}
+
+// SHOW/HIDE THE SMALL CASH INFO BUBBLE
+function toggleCashInfo() {
+    const info = document.getElementById("cash-info");
+    if (info) {
+        info.classList.toggle("hidden");
+    }
+}
+
+// small helpers to close old popups if used
+function closeUPI(){ const p=document.getElementById('upi-popup'); if(p) p.style.display='none'; }
+function closeCard(){ const p=document.getElementById('card-popup'); if(p) p.style.display='none'; }
+function closeCOD(){ const p=document.getElementById('cod-popup'); if(p) p.style.display='none'; }
+
+// ensure nothing expanded on initial load
+hideAllPaymentBoxes();
+</script>
+
+</body>
+</html>

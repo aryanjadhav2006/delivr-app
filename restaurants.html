@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Delivr — Restaurants</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.waves.min.js"></script>
+
+<script>
+VANTA.WAVES({
+  el: "body",
+  color: 0xe6e6e6,         // visible but still looks white
+  shininess: 15,
+  waveHeight: 25,
+  waveSpeed: 0.35,
+  zoom: 1.1,
+  backgroundColor: 0xffffff,
+  mouseControls: false,
+  touchControls: false
+});
+
+</script>
+
+<body>
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="nav-wrapper">
+      <a href="index.html" class="logo">
+        <img src="images/delivr-logo-transparent.png" alt="Delivr Logo" class="logo-img">
+      </a>
+      <div class="nav-content">
+        <a href="index.html" class="nav-item">Home</a>
+        <a href="browse.html" class="nav-item">Browse Menu</a>
+        <a href="restaurants.html" class="nav-item active">Restaurants</a>
+        <a href="track-order.html" class="nav-item">Track Order</a>
+        <a href="cart.html" class="nav-item">Cart</a>
+        <a href="profile.html" class="nav-item">Profile</a>
+        <a href="login.html" class="nav-item login-btn">Login/Signup</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container restaurants-page" id="main-content">
+    <header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+      <h1 class="section-title">Restaurants</h1>
+
+      <!-- simple search/filter (UI only, hook to JS later) -->
+      <div style="display:flex;gap:12px;align-items:center;">
+        <input id="search-input" type="search" placeholder="Search restaurants or dishes" style="padding:10px 14px;border-radius:10px;border:1px solid var(--border);width:320px;">
+        <select id="category-select" style="padding:10px;border-radius:10px;border:1px solid var(--border);">
+          <option value="">All categories</option>
+          <option value="pizza">Pizza</option>
+          <option value="biryani">Biryani</option>
+          <option value="breakfast">Breakfast</option>
+        </select>
+      </div>
+    </header>
+
+    <!-- status -->
+    <div id="restaurants-status" aria-live="polite" style="margin-bottom:16px;color:var(--text-gray);">Loading restaurants…</div>
+
+    <!-- list container (populate from JSON/API) -->
+    <section id="restaurants-list" class="restaurant-grid" aria-label="List of restaurants">
+      <!-- JS will inject cards here -->
+    </section>
+
+    <!-- empty / fallback -->
+    <div id="restaurants-empty" style="display:none;text-align:center;padding:40px 0;color:var(--text-gray);">
+      No restaurants found. Try changing your filters.
+    </div>
+  </main>
+
+  <script src="scripts/main.js" defer></script>
+</body>
+</html>

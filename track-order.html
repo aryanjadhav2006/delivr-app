@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Delivr — Track Order</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="nav-wrapper">
+      <a href="index.html" class="logo">
+        <img src="images/delivr-logo-transparent.png" alt="Delivr Logo" class="logo-img">
+      </a>
+      <div class="nav-content">
+        <a href="index.html" class="nav-item">Home</a>
+        <a href="browse.html" class="nav-item">Browse Menu</a>
+        <a href="restaurants.html" class="nav-item">Restaurants</a>
+        <a href="track-order.html" class="nav-item active">Track Order</a>
+        <a href="cart.html" class="nav-item">Cart</a>
+        <a href="profile.html" class="nav-item">Profile</a>
+        <a href="login.html" class="nav-item login-btn">Login/Signup</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" id="track-main" style="display:flex;gap:40px;align-items:flex-start;justify-content:space-between;">
+
+      <!-- Left block: Text -->
+      <section style="flex:1;">
+        <h1 class="track-title">
+          Watch your<br>
+          meal <span class="delivr-text">Delivr</span> on<br>
+          the move.
+        </h1>
+
+        <!-- ETA placeholder: dynamically filled -->
+        <div id="eta" class="delivery-eta" style="margin-top:24px;">
+          <!-- blank until JS loads -->
+        </div>
+      </section>
+
+
+      <!-- Right block: Map + Partner Info -->
+      <section class="track-map-section" style="flex:1;">
+
+        <!-- Map placeholder -->
+        <div id="map-container" class="map-placeholder" role="img" aria-label="Delivery map placeholder">
+          Map loading…
+        </div>
+
+        <!-- Delivery partner card (hidden until JS loads data) -->
+        <div id="delivery-partner" class="delivery-info" style="display:none; margin-top:20px;">
+          
+          <!-- Partner photo -->
+          <img id="partner-photo" class="partner-photo" alt="Delivery Partner Photo" style="display:none;">
+
+          <!-- Partner details -->
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            
+            <div id="partner-name" class="partner-name">
+              <!-- Name goes here -->
+            </div>
+
+            <div id="partner-rating" class="star-rating">
+              <!-- Stars go here -->
+            </div>
+
+            <div id="partner-meta" style="color:var(--text-gray);font-size:14px;">
+              <!-- Meta info goes here -->
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+  </main>
+
+  <script src="scripts/main.js" defer></script>
+</body>
+</html>

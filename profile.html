@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivr - Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body onload="checkLoginStatus()">
+
+<nav class="navbar">
+    <div class="nav-wrapper">
+        <a href="index.html" class="logo">
+            <img src="images/delivr-logo-transparent.png" alt="Delivr Logo" class="logo-img">
+        </a>
+        <div class="nav-content">
+            <a href="index.html" class="nav-item">Home</a>
+            <a href="browse.html" class="nav-item">Browse Menu</a>
+            <a href="restaurants.html" class="nav-item">Restaurants</a>
+            <a href="track-order.html" class="nav-item">Track Order</a>
+            <a href="cart.html" class="nav-item">Cart</a>
+            <a href="profile.html" class="nav-item active">Profile</a>
+            <a href="login.html" class="nav-item login-btn">Login/Signup</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ============================= -->
+<!-- LOGIN REQUIRED MESSAGE -->
+<!-- Hidden by default -->
+<!-- ============================= -->
+<div id="login-required" class="container profile-page" style="display:none; text-align:center; padding:100px 20px;">
+    <h2>Please log in to view your profile.</h2>
+    <a href="login.html" class="profile-button" style="margin-top:20px; display:inline-block;">Go to Login</a>
+</div>
+
+<!-- ============================= -->
+<!-- ACTUAL PROFILE SECTION -->
+<!-- ============================= -->
+<div id="profile-content" class="container profile-page">
+
+    <div class="profile-header">
+        <div class="profile-photo">U</div>
+
+        <div class="profile-details">
+            <h2 class="profile-name">User Name</h2>
+
+            <div class="star-rating">
+                <span class="star" style="color:#ccc;">★</span>
+                <span class="star" style="color:#ccc;">★</span>
+                <span class="star" style="color:#ccc;">★</span>
+                <span class="star" style="color:#ccc;">★</span>
+                <span class="star" style="color:#ccc;">★</span>
+            </div>
+
+            <p class="profile-phone">+91 XXXXX XXXXX</p>
+        </div>
+    </div>
+
+    <div class="profile-actions">
+        <a class="profile-button">Saved Addresses</a>
+        <a class="profile-button">Previous Orders</a>
+        <a class="profile-button">Personal Details</a>
+        <a class="profile-button">Help</a>
+        <a class="profile-button">My Vouchers</a>
+    </div>
+
+</div>
+
+<!-- ============================= -->
+<!-- SMALL LOGIN CHECK SCRIPT -->
+<!-- ============================= -->
+<script>
+function checkLoginStatus() {
+    // TEMPORARY FRONT-END LOGIN FLAG
+    const loggedIn = localStorage.getItem("loggedIn");
+
+    if (!loggedIn || loggedIn !== "true") {
+        // User NOT logged in
+        document.getElementById("profile-content").style.display = "none";
+        document.getElementById("login-required").style.display = "block";
+    } else {
+        // User logged in
+        document.getElementById("profile-content").style.display = "block";
+        document.getElementById("login-required").style.display = "none";
+    }
+}
+</script>
+
+</body>
+</html>
