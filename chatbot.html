@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivr - Chatbot</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <style>
+        .chat-container {
+            max-width: 800px;
+            margin: 80px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+        }
+
+        .chat-box {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 10px;
+            background: #fafafa;
+            margin-bottom: 20px;
+        }
+
+        .chat-msg {
+            margin: 10px 0;
+            padding: 12px 15px;
+            width: fit-content;
+            max-width: 75%;
+            border-radius: 12px;
+        }
+
+        .user {
+            background: #0F1A3D;
+            color: white;
+            margin-left: auto;
+        }
+
+        .bot {
+            background: #ffe4f3;
+            color: #222;
+        }
+
+        .chat-input {
+            width: 80%;
+            padding: 12px;
+            border: 1px solid #aaa;
+            border-radius: 8px;
+        }
+
+        .send-btn {
+            padding: 12px 18px;
+            background: #ff0077;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .send-btn:hover {
+            background: #d90064;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAV BAR SAME AS OTHER PAGES -->
+<nav class="navbar">
+    <div class="nav-wrapper">
+        <a href="index.html" class="logo">
+            <img src="images/delivr-logo-transparent.png" class="logo-img">
+        </a>
+
+        <div class="nav-content">
+            <a href="index.html" class="nav-item">Home</a>
+            <a href="browse.html" class="nav-item">Browse</a>
+            <a href="restaurants.html" class="nav-item">Restaurants</a>
+            <a href="cart.html" class="nav-item">Cart</a>
+            <a href="profile.html" class="nav-item">Profile</a>
+            <a href="chatbot.html" class="nav-item active">Chatbot</a>
+        </div>
+    </div>
+</nav>
+
+
+<div class="chat-container">
+    <h2>Ask me anything about food 🍕</h2>
+
+    <div class="chat-box" id="chatBox"></div>
+
+    <input id="chatInput" class="chat-input" placeholder="Ask me anything..." />
+    <button class="send-btn" onclick="sendMessage()">Send</button>
+</div>
+
+
+<script>
+async function sendMessage() {
+    const input = document.getElementById("chatInput");
+    const message = input.value.trim();
+    if (!message) return;
+
+    addMessage(message, "user");
+    input.value = "";
+
+    const res = await fetch("http://localhost:3000/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message })
+    });
+
+    const data = await res.json();
+    addMessage(data.reply, "bot");
+}
+
+function addMessage(text, type) {
+    const box = document.getElementById("chatBox");
+    const msg = document.createElement("div");
+    msg.classList.add("chat-msg", type);
+    msg.innerText = text;
+
+    box.appendChild(msg);
+    box.scrollTop = box.scrollHeight;
+}
+</script>
+
+</body>
+</html>
